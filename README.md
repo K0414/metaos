@@ -1,4 +1,4 @@
 metaos
 ======
 
-a HFT system
+a HFT system forked from http://code.google.com/p/metaos/
