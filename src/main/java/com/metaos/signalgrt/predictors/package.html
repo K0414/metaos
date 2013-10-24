@@ -1,0 +1,23 @@
+<html>
+<body>
+<h1>Numerical series predictors</h1>
+All predictors should implement <code>Predictor</code> interface.
+<br/>
+For building a predictor ready to be plugged as listener to a source of
+data, it must implement at the same time <code>Listener</code> interface,
+from <code>com.metaos.datamgt</code>. To help in this task,
+<code>PredictorListener</code> interface has been created.
+
+<h2>Simple predictors</h2>
+Simple predictors include the core numerical tasks. Should be implemented
+in an agnostically way, thus, without knowning anything about the type
+of data they are receiving.
+<br/>
+Subpackage <code>simple</code> has been created for housing these
+numerical algorithms.
+
+<h2>Specific predictors</h2>
+Created for specific tasks. For instance, to predict volume profiles,
+price changes, act as proxies of other values...
+</body>
+</html>

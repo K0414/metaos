@@ -1,0 +1,66 @@
+<h3>Data Source managements</h3>
+
+<p>
+Tha aim is to cover the following targets:
+  <ol>
+    <li>Align data in time</li>
+    <li>Remove noise</li>
+    <li>Join data from several sources and several symbols</li>
+    <li>Adding new variables</li>
+    <li>Dealing with huge volumes of data</li>
+  </ol>
+</p>
+
+<p>
+Interfaces govern the structure of the package:
+  <ul>
+    <li>Lines with prices are provided by <i>PricesSource</i>s. These classes
+        are in charge of joining data from several sources with different
+        internal structure (targets 5, 3 and 1).</li>
+    <li>Each line is processed by <i>SourceLineProcessor</i>s. Theses
+        classes are in charge of removing noise (target 2)</li>
+    <li>Who notifies to subscribed listeners (of types <i>PricesListener</i>
+        and <i>MarketListener</i>, covering target 4)</li>
+  </ul>
+</p>
+
+<p>
+Different types of <i>PricesSource</i>s are given:
+  <ul>
+    <li><i>SecondOrderSource</i> for source files with two orders: first in 
+            symbol, second in time.</li>
+    <li><i>OrderedSource</i> for source files with order only in time.</li>
+  </ul>
+</p>
+<p>
+<i>SourceLineProcessor</i>s try to parse each line, verifies if it's
+valid (in any sense), which symbols are present in the line, the date of
+the line and notifies to listeners when a set of lines are completely
+read and should be managed.
+<br>
+It's important to take into account the process as a whole:
+<ol>
+  <li><i>PriceSource</i> concrete class gets line by line from the source
+        of data (for instance as <i>OrderedSource</i> does with CSV file 
+        with only one symbol per line sorted by date).</li>
+  <li>After reading a line, a <i>SourceLineProcessor</i> gets information
+        like processed symbol, date and positional numeric values (for example,
+        <i>CSVSourceLineProcessor</i> deals with comma separated values,
+        and remembers, for each position, which data is present: open price,
+        volume, VWAP... More advanced classes, like <i>CSVReutersAdaptative</i>,
+        are able to adapt to present fields in file.)</li>
+  <li>When a set of lines are read, maybe when date changes, <i>PriceSource</i>
+        decides to ask to <i>SourceLineProcessor</i> for notifying listeners.
+        (For example, <i>OrderedSource</i> calls function <i>concludeLineSet</i>
+        on its <i>SourceLineProcessor</i> after every line is read, since
+        it's supposed there will be no more than one line with a given date.)
+        </li>
+</ol>
+To create this structure, the code should look like:<br><code><pre>
+lineProcessor = CSVReutersAdaptative('BRIC_1min.csv')
+source = OrderedSource('BRIC40_1min.csv', '1288.HK', lineProcessor)
+market = RandomAccessMarket(0.0, 5000)
+lineProcessor.addMarketListener(market)
+lineProcessor.addPricesListener(MyObserver())
+</pre></code>
+

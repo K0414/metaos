@@ -1,0 +1,34 @@
+Recommended packages for R:
+
+
+ 1.- FORECAST
+    Forecast http://cran.r-project.org/web/packages/forecast/index.html
+        > install.packages("forecast")
+
+    In MacOSX, use command line version of R, or these commands:
+        Download the package 
+        sudo /usr/bin/R CMD INSTALL  thepackage
+
+        See http://www.sysarchitects.com/node/94
+
+    Then, to use the library, in R:
+        > library(forecast)
+
+
+ 2.- PARTICLE FILTER
+    Forecast http://pomp.r-forge.r-project.org and
+             http://cran.at.r-project.org/web/packages/pomp/index.html
+        > install.packages("pomp")
+
+    In MacOSX, use command line version of R, or these commands:
+        Download the package 
+        sudo /usr/bin/R CMD INSTALL  thepackage
+
+        See http://www.sysarchitects.com/node/94
+
+    Then, to use the library, in R:
+        > library(pomp)
+
+
+ 3.- KALMAN FILTER
+        > install.packages("KFAS")

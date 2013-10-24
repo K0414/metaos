@@ -1,0 +1,136 @@
+<!-- $Id: build.xml,v 1.6 2011-06-23 15:00:51 l Exp $ -->
+
+<project name="metaos" basedir="." default="compile">
+    
+<property name="python-test" value="com/metaos/jy/lab/vwap.py"/>
+<property name="args-test1" value="TEF1min-N24033945.csv"/>
+<property name="args-test2" value="TEF.MC"/>
+<path id="compile.class.path">
+    <!-- <pathelement location="path,mybrother"/> -->
+    <fileset dir="lib">
+       <include name="*.jar"/>
+    </fileset>
+    <fileset dir="lib/swing-layout">
+       <include name="*.jar"/>
+    </fileset>
+</path>
+
+<target name="clean" description="Cleans every built elements">
+  <delete dir="distrib"/>
+  <delete dir="build/classes"/>
+  <delete dir="build/javadoc"/>
+</target>
+
+
+<target name="init" description="Creates directory structure">
+  <mkdir dir="build"/>
+  <mkdir dir="build/classes"/>
+  <mkdir dir="build/javadoc"/>
+  <mkdir dir="distrib"/>
+  <mkdir dir="distrib/doc"/>
+  <mkdir dir="distrib/bin"/>
+  <mkdir dir="distrib/lib"/>
+</target>
+
+
+<target name="nojunit-test" depends="distrib" 
+        description="Executes testing routines, but not Unit Testing">
+    <java fork="true" dir="distrib/bin" classname="com.metaos.engine.Engine">
+        <classpath>
+            <fileset dir="lib">
+               <include name="*.jar"/>
+            </fileset>
+            <pathelement path="distrib/lib/metaos.jar"/>
+        </classpath>
+        <sysproperty key="python.path" value="."/>
+        <sysproperty key="java.library.path" value="../lib"/>
+        <arg value="init.py"/>
+        <arg value="${python-test}"/>
+        <arg value="${args-test1}"/>
+        <arg value="${args-test2}"/>
+    </java>
+</target>
+
+<target name="test" depends="compile" description="Executes Unit Testing">
+    <javac destdir="build/classes"
+               classpathref="compile.class.path" 
+               debug="yes" deprecation="yes">
+        <src path="src/test/java"/>
+    </javac>
+    <jar jarfile="test/lib/metaos.jar" basedir="build/classes"/>
+    <copy todir="test/lib">
+      <fileset dir="lib" includes="**/*.*"/>
+      <fileset dir="lib/swing-layout" includes="**/*.*"/>
+      <fileset dir="distrib/lib" includes="**/*.*"/>
+    </copy>
+    <copy todir="test/bin">
+      <!-- <fileset dir="src/test/jython" includes="**/*.*"/>
+      <fileset dir="src/test/R" includes="**/*.*"/> -->
+      <fileset dir="src/test/sh" includes="*.*"/>
+    </copy>
+    <chmod perm="+x">
+        <fileset dir="test/bin" includes="**/*.sh"/>
+    </chmod>
+</target>
+
+
+
+<target name="run" depends="distrib" 
+        description="Executes graphical console">
+    <java fork="true" dir="distrib/bin" classname="com.metaos.engine.Console">
+        <classpath>
+            <fileset dir="lib">
+               <include name="*.jar"/>
+            </fileset>
+            <fileset dir="lib/swing-layout">
+               <include name="*.jar"/>
+            </fileset>
+            <pathelement path="distrib/lib/metaos.jar"/>
+        </classpath>
+        <arg value="init.py"/>
+    </java>
+</target>
+
+
+<target name="compile" depends="init" description="Compiles everything">
+    <javac destdir="build/classes"
+               classpathref="compile.class.path" 
+               debug="yes" deprecation="yes">
+        <src path="src/main/java"/>
+    </javac>
+</target>
+
+
+<target name="distrib" depends="compile" description="Packages everything">
+    <jar jarfile="distrib/lib/metaos.jar" basedir="build/classes"/>
+    <copy todir="distrib/lib">
+      <fileset dir="lib" includes="**/*.*"/>
+      <fileset dir="lib/swing-layout" includes="**/*.*"/>
+    </copy>
+    <copy todir="distrib/bin">
+      <fileset dir="src/main/jython" includes="**/*.*"/>
+      <fileset dir="src/main/R" includes="**/*.*"/>
+      <fileset dir="src/main/sh" includes="*.*"/>
+      <fileset dir="src/main/sh/ext" includes="*.*"/>
+    </copy>
+    <chmod perm="+x">
+        <fileset dir="distrib/bin" includes="**/*.sh"/>
+    </chmod>
+</target>
+
+
+<!-- ============================================================ -->
+<target name="javadoc" depends="init" description="Creates javadoc">
+    <javadoc packagenames="com.metaos.*"
+             sourcepath="src/main/java" destdir="build/javadoc"
+             classpathref="compile.class.path" private="true"
+             use="true" author="true"
+             windowtitle="Technical Analysis for Stock Prices"
+             header="Tech Analysis" footer="2011 - LGPL luisf.canals@gmail.com">
+        <tag name="implementation" description="Implementation details: " />
+        <tag name="todo" description="Remains to do: " />
+        <link href="../../doc/jdk" offline="true" packagelistLoc="doc/jdk" />
+    </javadoc>
+</target>
+
+</project>

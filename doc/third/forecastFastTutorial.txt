@@ -1,0 +1,16 @@
+Fast Tutorial on Forecast R package
+-----------------------------------
+
+By luisf.canals@gmail.com / yahoo.com / hotmail.com, summer of 2011
+Based on http://www.jstatsoft.org/v27/i03/paper
+
+1.- Get the vector of numbers (the "series")
+
+2.- Generate the model
+    etsfit <- ets(y)
+
+3.- Forecast next values
+    fore <- forecast(etsfit)
+
+
+

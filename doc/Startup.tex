@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{color}
+\usepackage{listings}
+
+\title{MetaOS startup with a Python file. Internal reference}
+\author{Sergio Alvarez (setelena@gmail.com),
+    Luis F. Canals (luisf.canals@gmail.com)}
+
+\begin{document}
+
+\date{\today}
+\maketitle
+
+
+\section{Abstract}
+
+\section{Involved classes}
+
+\lstset{language=Java,frame=single,tabsize=2,basicstyle=\tiny}
+\lstinputlisting{../src/java/com/metaos/engine/Engine.java}
+
+As it's seen from the code, a R source code named \emph{correlation.r}
+where a class \emph{correlator} is defined. The class should have got the
+methods \emph{memo} and \emph{show}, as in this example:
+
+\lstset{language=R,frame=single,tabsize=2,basicstyle=\tiny}
+\lstinputlisting{../src/R/correlation.r}
+
+
+
+\section{Code explanation}
+
+The following code (\emph{rintegration.py}) uses the same described principle 
+in the previous section but letting the name of R source containing the 
+class as a runtime parameter:
+
+\lstset{language=Python,frame=single,tabsize=2,basicstyle=\tiny}
+\lstinputlisting{../src/python/rintegration.py}
+
+In this case, interface for R class has been modified, to create a simple
+predictor with two methods, \emph{learn} and \emph{predict}. An example of
+predictor based on linear regression might look like this:
+
+From the example, we write down the interface all R-class should satisfy
+to be compatible with \emph{rintegration.py} requirements (in pseudocode 
+Java-like):
+
+\lstset{language=Java,frame=single,tabsize=4,basicstyle=\tiny}
+\begin{lstlisting}
+
+    interface PredictorInR {
+        // Learns a new relation x->y
+        void learn(double x, double y);
+
+        // Tries to predict the value of y from x
+        double predict(double x);
+    }
+
+\end{lstlisting}
+\label{PredictorInR}
+
+\section{Other languages. R, for instance}
+
+
+\section{Startup from graphical console}
+
+The code in \emph{rintegration.py} can be invoked even from command line or
+from visual interface. In both cases, file acting as a source of prices,
+the main Python script (\emph{rintegration.py} in this case) and the R file
+containing the source code of the class with the predictor following the 
+interface described in the interface \ref{PredictorInR}.
+
+
+\section{License terms}
+
+This is a GNU Licensed Document. Modifications and copies of this document
+must follow the GNU License, refering to authors and to the original document.
+All other rights are reserved by the authors.
+\end{document}

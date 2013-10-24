@@ -1,0 +1,40 @@
+<html>
+<body>
+<h1>Base predictors for specific usages.</h1>
+<p>
+If you are a user, please go directly to subpackages containing concrete
+implementations to predict specific elements.
+</p>
+<p>
+If you're developer, you should look for a predictor that performs a similar
+task in this package and extend it fixing initialization parameters.
+<p/>
+<p>
+The main ideas of classes in this package are:
+<ul>
+  <li>Classes <code>OnePredictorPerTypeOfDayOfWeek</code>,
+          <code>OnePredictorPerBin</code> and
+          <code>OnePredictorPerBinAndTypeOfDayOfWeek</code> are wrappers
+          of several predictors of the same type given at construction time.
+   </li>
+   <li>Classes <code>PCACombiningSeveralDays</code> and 
+          <code>PCADayByDayPredictor</code> act as base classes for other
+          Principal Component Analysis: the first one takes data creating
+          a matrix with one day per column (recording information for 
+          several days and one one product) and the second one takes data
+          to create a matrix with one product daily data per column
+          (recording information for several products in only one day).
+    </li>
+    <li><code>StaticDayByDayPredictor</code> is the base class for predictors
+         like <code>PCADayByDayPredictor</code> that after recording all
+         information for a day, generate a prediction for the next day
+         as a whole.</li>
+    <li>In the opposite, <code>DynamicIntradePredictorListener</code> is the
+         base class of predictors that generate predictions while they
+         are learning.</li>
+    <li><code>QuasiDynamicIntradayPredictorListener</code> uses some data
+         learnt at the begining of the day to forecast the whole day.</li>
+</ul>
+</p>
+</body>
+</html>

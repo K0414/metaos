@@ -1,0 +1,3 @@
+Package used ti Particle Filter and Partially observed Markov processes:
+
+http://pomp.r-forge.r-project.org

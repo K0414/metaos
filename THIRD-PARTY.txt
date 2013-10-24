@@ -1,0 +1,17 @@
+Third party software
+--------------------
+
+Following packages are used as library provided by third parties.
+Licenses and terms of usage are described in their own sites:
+
+    a.- Python Statlib
+        http://python-statlib.googlecode.com
+
+    b.- Jython
+
+    c.- Apache commons math
+
+    d.- Tasecurity Utility Library
+
+
+    
